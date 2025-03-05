@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VietNamQRPay", "VietNamQRPay\VietNamQRPay.csproj", "{09C2548A-940A-4B80-ADD9-F090BD07C616}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QRCodeGeneratorPresentation", "QRCodeGeneratorPresentation\QRCodeGeneratorPresentation.csproj", "{59D0E3B6-00FF-4BFB-81CD-5651F5D91E64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QRCodeGeneratorTestForm", "QRCodeGeneratorTestForm\QRCodeGeneratorTestForm.csproj", "{CA909DA4-1BB7-4EB6-B5B7-674587A7FC76}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09C2548A-940A-4B80-ADD9-F090BD07C616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09C2548A-940A-4B80-ADD9-F090BD07C616}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09C2548A-940A-4B80-ADD9-F090BD07C616}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09C2548A-940A-4B80-ADD9-F090BD07C616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59D0E3B6-00FF-4BFB-81CD-5651F5D91E64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59D0E3B6-00FF-4BFB-81CD-5651F5D91E64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59D0E3B6-00FF-4BFB-81CD-5651F5D91E64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59D0E3B6-00FF-4BFB-81CD-5651F5D91E64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA909DA4-1BB7-4EB6-B5B7-674587A7FC76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA909DA4-1BB7-4EB6-B5B7-674587A7FC76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA909DA4-1BB7-4EB6-B5B7-674587A7FC76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA909DA4-1BB7-4EB6-B5B7-674587A7FC76}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
