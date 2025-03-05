@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             LblBankCode = new Label();
             TxtBankAccount = new TextBox();
             LblBankAccount = new Label();
@@ -141,6 +142,7 @@
             Controls.Add(LblBankAccount);
             Controls.Add(LblBankCode);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4);
             Name = "FrmMain";
             StartPosition = FormStartPosition.CenterScreen;

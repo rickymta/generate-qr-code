@@ -15,7 +15,10 @@ namespace GenerateQRCodeTestForm
             CboBankCode.DataSource = bankList;
             CboBankCode.DisplayMember = "Display";
             CboBankCode.ValueMember = "Value";
-            CboBankCode.SelectedIndex = 0;
+            CboBankCode.SelectedIndex = 44;
+            TxtBankAccount.Text = "19034125504011";
+            TxtAmount.Text = "50000";
+            TxtContent.Text = "QuanDH chuyen tien";
         }
 
         private void BtnGenerate_Click(object sender, EventArgs e)
@@ -23,9 +26,8 @@ namespace GenerateQRCodeTestForm
             if (CboBankCode.SelectedItem is not null)
             {
                 var selectedBank = (dynamic)CboBankCode.SelectedItem;
-                MessageBox.Show($"Mã ngân hàng: {selectedBank.Value}\nTên ngân hàng: {selectedBank.Display}");
-
-                var bankBin = BankApp.BanksObject.FirstOrDefault(b => b.Key == selectedBank.Value).Value.bin;
+                var bankFind = BankMapping.Banks.FirstOrDefault(b => b.Code == selectedBank.Value);
+                var bankBin = BankApp.BanksObject.FirstOrDefault(b => b.Key == bankFind.Key).Value.bin;
                 var bankAccount = TxtBankAccount.Text;
                 var amount = TxtAmount.Text;
                 QRPay? qrPayContent;
