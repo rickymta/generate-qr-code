@@ -348,3 +348,5 @@ healthchecksdb
 .github/
 .sonarqube/
 .env
+
+QRCodeStorage/
