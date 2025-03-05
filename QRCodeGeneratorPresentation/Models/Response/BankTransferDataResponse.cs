@@ -41,4 +41,9 @@ public class BankTransferDataResponse
     /// Nội dung chuyển khoản
     /// </summary>
     public string Content { get; set; } = null!;
+
+    /// <summary>
+    /// Đường dẫn file ảnh mã QR
+    /// </summary>
+    public string FileLink { get; set; } = null!;
 }

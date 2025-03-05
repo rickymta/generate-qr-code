@@ -14,6 +14,29 @@ namespace QRCodeGeneratorPresentation.Controllers;
 public class BankController : ControllerBase
 {
     /// <summary>
+    /// Đường dẫn lưu trữ ảnh mã QR
+    /// </summary>
+    private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "QRCodeStorage");
+
+    /// <summary>
+    /// Môi trường chạy
+    /// </summary>
+    private readonly IWebHostEnvironment _environment;
+
+    /// <summary>
+    /// Khởi tạo controller
+    /// </summary>
+    /// <param name="environment"></param>
+    public BankController(IWebHostEnvironment environment)
+    {
+        _environment = environment;
+        if (!Directory.Exists(_storagePath))
+        {
+            Directory.CreateDirectory(_storagePath);
+        }
+    }
+
+    /// <summary>
     /// Lấy danh sách ngân hàng
     /// </summary>
     /// <returns>
@@ -112,7 +135,7 @@ public class BankController : ControllerBase
     /// Trả về mã QR cho chuyển khoản ngân hàng
     /// </returns>
     /// <response code="200">Trả về mã QR dạng Base64</response>
-    /// <response code="400">Nếu chuỗi nhập vào trống</response>
+    /// <response code="400">Nếu có lỗi xảy ra</response>
     [HttpPost("generate-qr-code")]
     public IActionResult GenerateQRCodeAsync(BankTransferDataRequest request)
     {
@@ -158,6 +181,15 @@ public class BankController : ControllerBase
                 var qrCodeBytes = qrCode.GetGraphic(20);
                 var base64String = Convert.ToBase64String(qrCodeBytes);
 
+                // Lưu file ảnh
+                string fileName = $"{Guid.NewGuid()}.png";
+                string filePath = Path.Combine(_storagePath, fileName);
+                System.IO.File.WriteAllBytes(filePath, qrCodeBytes);
+
+                // Lấy domain hiện tại từ HttpContext
+                var domain = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                var url = $"{domain}/api/bank/display-qr-code?fileName={fileName}";
+
                 // Trả về thông tin mã QR
                 var response = new BankTransferDataResponse
                 {
@@ -167,7 +199,8 @@ public class BankController : ControllerBase
                     Content = request.Content,
                     QRCodeContent = qrCodeContent,
                     QRCodeBase64 = base64String,
-                    QRCodeBase64Image = $"data:image/png;base64,{base64String}"
+                    QRCodeBase64Image = $"data:image/png;base64,{base64String}",
+                    FileLink = url
                 };
 
                 return Ok(new ResponseResult
@@ -184,6 +217,45 @@ public class BankController : ControllerBase
                 Code = -2,
                 Message = "Cannot generate QRCode!"
             });
+        }
+        catch (Exception ex)
+        {
+            // Nếu có lỗi thì trả về lỗi
+            return BadRequest(new ResponseResult
+            {
+                Code = -99,
+                Message = ex.Message
+            });
+        }
+    }
+
+    /// <summary>
+    /// Hiển thị ảnh mã QR
+    /// </summary>
+    /// <param name="fileName">Tên file ảnh mã QR</param>
+    /// <remarks>
+    /// Hiển thị ảnh mã QR dưới dạng file ảnh
+    /// </remarks>
+    /// <returns>
+    /// Trả về ảnh mã QR
+    /// </returns>
+    /// <response code="200">Trả về hình ảnh mã QR</response>
+    /// <response code="400">Nếu có lỗi xảy ra</response>
+    [HttpGet("display-qr-code")]
+    public IActionResult DisplayImage([FromQuery] string fileName)
+    {
+        try
+        {
+            // Kiểm tra xem file có tồn tại không
+            string filePath = Path.Combine(_storagePath, fileName);
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound("Ảnh không tồn tại.");
+            }
+
+            // Đọc file ảnh và trả về dưới dạng FileResult
+            byte[] imageBytes = System.IO.File.ReadAllBytes(filePath);
+            return File(imageBytes, "image/png"); // Thay "image/png" bằng MIME type phù hợp
         }
         catch (Exception ex)
         {
