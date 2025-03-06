@@ -25,4 +25,9 @@ public class BankTransferDataRequest
     /// Nội dung chuyển khoản
     /// </summary>
     public string? Content { get; set; }
+
+    /// <summary>
+    /// Có tạo ảnh QRCode hay không
+    /// </summary>
+    public bool IsGenerateFile { get; set; } = false;
 }
