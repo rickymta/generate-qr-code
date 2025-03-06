@@ -39,6 +39,7 @@
             BtnGenerate = new Button();
             PtbQRCode = new PictureBox();
             CboBankCode = new ComboBox();
+            ChkUseLocalLogo = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)PtbQRCode).BeginInit();
             SuspendLayout();
             // 
@@ -112,6 +113,7 @@
             // 
             // PtbQRCode
             // 
+            PtbQRCode.BorderStyle = BorderStyle.FixedSingle;
             PtbQRCode.Location = new Point(352, 226);
             PtbQRCode.Name = "PtbQRCode";
             PtbQRCode.Size = new Size(359, 359);
@@ -126,11 +128,22 @@
             CboBankCode.Size = new Size(301, 29);
             CboBankCode.TabIndex = 10;
             // 
+            // ChkUseLocalLogo
+            // 
+            ChkUseLocalLogo.AutoSize = true;
+            ChkUseLocalLogo.Location = new Point(352, 188);
+            ChkUseLocalLogo.Name = "ChkUseLocalLogo";
+            ChkUseLocalLogo.Size = new Size(180, 25);
+            ChkUseLocalLogo.TabIndex = 11;
+            ChkUseLocalLogo.Text = "Sử dụng logo cá nhân";
+            ChkUseLocalLogo.UseVisualStyleBackColor = true;
+            // 
             // FrmMain
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(740, 607);
+            Controls.Add(ChkUseLocalLogo);
             Controls.Add(CboBankCode);
             Controls.Add(PtbQRCode);
             Controls.Add(BtnGenerate);
@@ -164,5 +177,6 @@
         private Button BtnGenerate;
         private PictureBox PtbQRCode;
         private ComboBox CboBankCode;
+        private CheckBox ChkUseLocalLogo;
     }
 }

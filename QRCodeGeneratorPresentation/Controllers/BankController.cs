@@ -2,6 +2,8 @@
 using QRCodeGeneratorPresentation.Models.Request;
 using QRCodeGeneratorPresentation.Models.Response;
 using QRCoder;
+using System.Drawing;
+using System.Drawing.Imaging;
 using VietNamQRPay;
 
 namespace QRCodeGeneratorPresentation.Controllers;
@@ -67,7 +69,7 @@ public class BankController : ControllerBase
     public IActionResult GetBankDetailByCodeAsync([FromQuery] string bankCode)
     {
         // Kiểm tra mã ngân hàng
-        var find = BankMapping.Banks.FirstOrDefault(b => b.Code == bankCode);
+        var find = BankMapping.Banks.FirstOrDefault(b => b.Code.Equals(bankCode.ToUpper()));
         // Nếu không tìm thấy mã ngân hàng thì trả về lỗi
         if (find is null)
         {
@@ -100,7 +102,7 @@ public class BankController : ControllerBase
     public IActionResult GetBankDetailByShortNameAsync([FromQuery] string bankShortName)
     {
         // Kiểm tra short name ngân hàng
-        var find = BankMapping.Banks.FirstOrDefault(b => b.Key == bankShortName);
+        var find = BankMapping.Banks.FirstOrDefault(b => b.Key.ToLower().Equals(bankShortName.ToLower()));
         // Nếu không tìm thấy short name ngân hàng thì trả về lỗi
         if (find is null)
         {
@@ -181,15 +183,6 @@ public class BankController : ControllerBase
                 var qrCodeBytes = qrCode.GetGraphic(20);
                 var base64String = Convert.ToBase64String(qrCodeBytes);
 
-                // Lưu file ảnh
-                string fileName = $"{Guid.NewGuid()}.png";
-                string filePath = Path.Combine(_storagePath, fileName);
-                System.IO.File.WriteAllBytes(filePath, qrCodeBytes);
-
-                // Lấy domain hiện tại từ HttpContext
-                var domain = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-                var url = $"{domain}/api/bank/display-qr-code?fileName={fileName}";
-
                 // Trả về thông tin mã QR
                 var response = new BankTransferDataResponse
                 {
@@ -200,8 +193,44 @@ public class BankController : ControllerBase
                     QRCodeContent = qrCodeContent,
                     QRCodeBase64 = base64String,
                     QRCodeBase64Image = $"data:image/png;base64,{base64String}",
-                    FileLink = url
                 };
+
+                // Nếu yêu cầu tạo file ảnh mã QR thì tạo file ảnh mã QR
+                if (request.IsGenerateFile)
+                {
+                    // Lưu file ảnh
+                    string fileName = $"{Guid.NewGuid()}.png";
+                    string filePath = Path.Combine(_storagePath, fileName);
+
+                    using var ms = new MemoryStream(qrCodeBytes);
+                    using (var indexedBitmap = new Bitmap(ms))
+                    {
+                        using var qrBitmap = new Bitmap(indexedBitmap.Width, indexedBitmap.Height, PixelFormat.Format32bppArgb);
+                        using (var graphics = Graphics.FromImage(qrBitmap))
+                        {
+                            graphics.DrawImage(indexedBitmap, 0, 0);
+                        }
+
+                        var logoPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Resource"), "logo.png");
+                        if (System.IO.File.Exists(logoPath))
+                        {
+                            using var logo = new Bitmap(logoPath);
+                            var overlaySize = qrBitmap.Width / 5;
+                            using var resizedLogo = new Bitmap(logo, new Size(overlaySize, overlaySize));
+                            using var graphics = Graphics.FromImage(qrBitmap);
+                            var posX = (qrBitmap.Width - overlaySize) / 2;
+                            var posY = (qrBitmap.Height - overlaySize) / 2;
+                            graphics.DrawImage(resizedLogo, posX, posY, overlaySize, overlaySize);
+                        }
+
+                        qrBitmap.Save(filePath, ImageFormat.Png);
+                    }
+
+                    // Lấy domain hiện tại từ HttpContext
+                    var domain = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                    var url = $"{domain}/qrcode/display-qr-code?fileName={fileName}";
+                    response.FileLink = url;
+                }
 
                 return Ok(new ResponseResult
                 {
@@ -230,6 +259,93 @@ public class BankController : ControllerBase
     }
 
     /// <summary>
+    /// Tạo mã QR cho chuyển khoản ngân hàng
+    /// </summary>
+    /// <param name="request">Thông tin yêu cầu tạo mã QR</param>
+    /// <remarks>
+    /// Dữ liệu yêu cầu tạo mã QR cho chuyển khoản ngân hàng: <br/>
+    /// Mã BIN của ngân hàng <br/>
+    /// Số tài khoản ngân hàng <br/>
+    /// Số tiền chuyển khoản (optional) <br/>
+    /// Nội dung chuyển khoản (optional)
+    /// </remarks>
+    /// <returns>
+    /// Trả về mã QR cho chuyển khoản ngân hàng
+    /// </returns>
+    /// <response code="200">Trả về mã QR dạng Base64</response>
+    /// <response code="400">Nếu có lỗi xảy ra</response>
+    [HttpPost("generate-qr-code-image")]
+    public IActionResult GenerateQRCodeReturnFileAsync(TransferDataRequest request)
+    {
+        try
+        {
+            // Tạo nội dung của mã QR
+            var qrPayContent = QRPay.InitVietQR(request.BankBin, request.BankAccount, request.Amount, request.Content);
+            var qrCodeContent = qrPayContent.Build();
+
+            using var qrGenerator = new QRCodeGenerator();
+            using var qrCodeData = qrGenerator.CreateQrCode(qrCodeContent, QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new PngByteQRCode(qrCodeData);
+            // Tạo QR code dưới dạng mảng byte
+            var qrCodeBytes = qrCode.GetGraphic(20);
+
+            // Chuyển đổi mảng byte thành hình ảnh
+            using var qrCodeImageStream = new MemoryStream(qrCodeBytes);
+            using var qrCodeImage = Image.FromStream(qrCodeImageStream);
+            // Tạo một hình ảnh mới với định dạng pixel không được lập chỉ mục
+            using var nonIndexedImage = new Bitmap(qrCodeImage.Width, qrCodeImage.Height, PixelFormat.Format32bppArgb);
+            using (var graphics = Graphics.FromImage(nonIndexedImage))
+            {
+                // Vẽ QR code lên hình ảnh mới
+                graphics.DrawImage(qrCodeImage, 0, 0);
+            }
+
+            // Thêm logo vào giữa QR code
+            var logoPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Resource"), "logo.png");
+            if (System.IO.File.Exists(logoPath))
+            {
+                using var logo = Image.FromFile(logoPath);
+                // Chuyển đổi logo sang định dạng pixel không được lập chỉ mục (nếu cần)
+                using var nonIndexedLogo = new Bitmap(logo.Width, logo.Height, PixelFormat.Format32bppArgb);
+                using (var logoGraphics = Graphics.FromImage(nonIndexedLogo))
+                {
+                    logoGraphics.DrawImage(logo, 0, 0);
+                }
+
+                // Tính toán kích thước và vị trí của logo
+                var logoSize = new Size((int)(nonIndexedImage.Width * 0.2), (int)(nonIndexedImage.Height * 0.2));
+                var logoPosition = new Point(
+                    (nonIndexedImage.Width - logoSize.Width) / 2,
+                    (nonIndexedImage.Height - logoSize.Height) / 2
+                );
+
+                // Vẽ logo lên QR code
+                using (var graphics = Graphics.FromImage(nonIndexedImage))
+                {
+                    graphics.DrawImage(nonIndexedLogo, new Rectangle(logoPosition, logoSize));
+                }
+            }
+
+            // Chuyển đổi hình ảnh thành stream
+            using var outputStream = new MemoryStream();
+            nonIndexedImage.Save(outputStream, ImageFormat.Png);
+            outputStream.Position = 0;
+
+            // Trả về hình ảnh dưới dạng FileResult
+            return File(outputStream.ToArray(), "image/png", "qrcode.png");
+        }
+        catch (Exception ex)
+        {
+            // Nếu có lỗi thì trả về lỗi
+            return BadRequest(new ResponseResult
+            {
+                Code = -99,
+                Message = ex.Message
+            });
+        }
+    }
+
+    /// <summary>
     /// Hiển thị ảnh mã QR
     /// </summary>
     /// <param name="fileName">Tên file ảnh mã QR</param>
@@ -241,7 +357,7 @@ public class BankController : ControllerBase
     /// </returns>
     /// <response code="200">Trả về hình ảnh mã QR</response>
     /// <response code="400">Nếu có lỗi xảy ra</response>
-    [HttpGet("display-qr-code")]
+    [HttpGet("/qrcode/display-qr-code")]
     public IActionResult DisplayImage([FromQuery] string fileName)
     {
         try

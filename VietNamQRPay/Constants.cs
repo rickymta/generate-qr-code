@@ -65,64 +65,121 @@ public static class BankNameMapping
     };
 }
 
-public class BankInformation
+/// <summary>
+/// Thông tin ngân hàng
+/// </summary>
+/// <param name="id"></param>
+/// <param name="name"></param>
+/// <param name="key"></param>
+/// <param name="type"></param>
+/// <param name="bin"></param>
+/// <param name="shortName"></param>
+/// <param name="code"></param>
+/// <param name="bankLogo"></param>
+public class BankInformation(int id, string name, string key, int type, string bin, string shortName, string code, string bankLogo)
 {
-    public string Code { get; set; } = null!;
-    public string Key { get; set; } = null!;
-    public string Name { get; set; } = null!;
+    /// <summary>
+    /// Id ngân hàng
+    /// </summary>
+    public int Id { get; set; } = id;
+
+    /// <summary>
+    /// Tên ngân hàng
+    /// </summary>
+    public string Name { get; set; } = name;
+
+    /// <summary>
+    /// Key ngân hàng
+    /// </summary>
+    public string Key { get; set; } = key;
+
+    /// <summary>
+    /// Mã BIN của ngân hàng
+    /// </summary>
+    public string Bin { get; set; } = bin;
+
+    /// <summary>
+    /// Loại ngân hàng
+    /// </summary>
+    public int Type { get; set; } = type;
+
+    /// <summary>
+    /// Mã ngân hàng
+    /// </summary>
+    public string Code { get; set; } = code;
+
+    /// <summary>
+    /// Tên viết tắt của ngân hàng
+    /// </summary>
+    public string ShortName { get; set; } = shortName;
+
+    /// <summary>
+    /// Logo ngân hàng
+    /// </summary>
+    public string BankLogo { get; set; } = bankLogo;
+
+    /// <summary>
+    /// Chuyển đổi thông tin ngân hàng sang chuỗi
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()
+    {
+        return $"Id: {Id}, Name: {Name}, Key: {Key}, Type: {Type}, Bin: {Bin}, ShortName: {ShortName}, Code: {Code}";
+    }
 }
 
 public static class BankMapping
 {
     public static readonly List<BankInformation> Banks =
     [
-        new() { Code = "ABB", Key = "abbank", Name = "Ngân hàng TMCP An Bình" },
-        new() { Code = "ACB", Key = "acb", Name = "Ngân hàng TMCP Á Châu" },
-        new() { Code = "AGRIBANK", Key = "agribank", Name = "Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam" },
-        new() { Code = "BAB", Key = "bacabank", Name = "Ngân hàng TMCP Bắc Á" },
-        new() { Code = "BAOVIETBANK", Key = "baoviet", Name = "Ngân hàng TMCP Bảo Việt" },
-        new() { Code = "BVB", Key = "banviet", Name = "Ngân hàng TMCP Bản Việt" },
-        new() { Code = "BIDC", Key = "bidc", Name = "Ngân hàng Đầu tư và Phát triển Campuchia" },
-        new() { Code = "BID", Key = "bidv", Name = "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam" },
-        new() { Code = "CAKE", Key = "cake", Name = "Ngân hàng số CAKE" },
-        new() { Code = "VNCB", Key = "cbbank", Name = "Ngân hàng Xây dựng Việt Nam" },
-        new() { Code = "CIMB", Key = "cimb", Name = "Ngân hàng CIMB Việt Nam" },
-        new() { Code = "COOPBANK", Key = "coopbank", Name = "Ngân hàng Hợp tác xã Việt Nam" },
-        new() { Code = "DBS", Key = "dbsbank", Name = "Ngân hàng DBS Singapore" },
-        new() { Code = "DONGABANK", Key = "dongabank", Name = "Ngân hàng TMCP Đông Á" },
-        new() { Code = "EIB", Key = "eximbank", Name = "Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam" },
-        new() { Code = "GPBANK", Key = "gpbank", Name = "Ngân hàng TMCP Dầu khí Toàn cầu" },
-        new() { Code = "HDB", Key = "hdbank", Name = "Ngân hàng TMCP Phát triển TP.HCM" },
-        new() { Code = "HLB", Key = "hongleongbank", Name = "Ngân hàng Hong Leong Việt Nam" },
-        new() { Code = "HSBC", Key = "hsbc", Name = "Ngân hàng HSBC Việt Nam" },
-        new() { Code = "IBKHCM", Key = "ibkhcm", Name = "Ngân hàng Công nghiệp Hàn Quốc (Chi nhánh TP.HCM)" },
-        new() { Code = "IBKHN", Key = "ibkhn", Name = "Ngân hàng Công nghiệp Hàn Quốc (Chi nhánh Hà Nội)" },
-        new() { Code = "IVB", Key = "indovinabank", Name = "Ngân hàng TNHH Indovina" },
-        new() { Code = "KBANK", Key = "kasikorn", Name = "Ngân hàng Kasikorn Bank" },
-        new() { Code = "KLB", Key = "kienlongbank", Name = "Ngân hàng TMCP Kiên Long" },
-        new() { Code = "KBHCM", Key = "kookminhcm", Name = "Ngân hàng Kookmin (Chi nhánh TP.HCM)" },
-        new() { Code = "KBHN", Key = "kookminhn", Name = "Ngân hàng Kookmin (Chi nhánh Hà Nội)" },
-        new() { Code = "LPB", Key = "lienvietpostbank", Name = "Ngân hàng TMCP Bưu điện Liên Việt" },
-        new() { Code = "MBB", Key = "mbbank", Name = "Ngân hàng TMCP Quân đội" },
-        new() { Code = "MSB", Key = "msb", Name = "Ngân hàng TMCP Hàng Hải Việt Nam" },
-        new() { Code = "NAB", Key = "namabank", Name = "Ngân hàng TMCP Nam Á" },
-        new() { Code = "NVB", Key = "ncb", Name = "Ngân hàng TMCP Quốc Dân" },
-        new() { Code = "NONGHYUP", Key = "nonghyup", Name = "Ngân hàng Nông nghiệp Hàn Quốc (NongHyup)" },
-        new() { Code = "OCB", Key = "ocb", Name = "Ngân hàng TMCP Phương Đông" },
-        new() { Code = "OCEANBANK", Key = "oceanbank", Name = "Ngân hàng TMCP Đại Dương" },
-        new() { Code = "PGB", Key = "pgbank", Name = "Ngân hàng TMCP Xăng dầu Petrolimex" },
-        new() { Code = "PBVN", Key = "publicbank", Name = "Ngân hàng Public Bank Việt Nam" },
-        new() { Code = "PVCOMBANK", Key = "pvcombank", Name = "Ngân hàng TMCP Đại Chúng Việt Nam" },
-        new() { Code = "STB", Key = "sacombank", Name = "Ngân hàng TMCP Sài Gòn Thương Tín" },
-        new() { Code = "SGB", Key = "saigonbank", Name = "Ngân hàng TMCP Sài Gòn Công Thương" },
-        new() { Code = "SCB", Key = "scb", Name = "Ngân hàng TMCP Sài Gòn" },
-        new() { Code = "SSB", Key = "seabank", Name = "Ngân hàng TMCP Đông Nam Á" },
-        new() { Code = "SHB", Key = "shb", Name = "Ngân hàng TMCP Sài Gòn - Hà Nội" },
-        new() { Code = "TCB", Key = "techcombank", Name = "Ngân hàng TMCP Kỹ Thương Việt Nam" },
-        new() { Code = "TPB", Key = "tpbank", Name = "Ngân hàng TMCP Tiên Phong" },
-        new() { Code = "VCB", Key = "vietcombank", Name = "Ngân hàng TMCP Ngoại Thương Việt Nam" },
-        new() { Code = "CTG", Key = "vietinbank", Name = "Ngân hàng TMCP Công Thương Việt Nam" },
-        new() { Code = "VPB", Key = "vpbank", Name = "Ngân hàng TMCP Việt Nam Thịnh Vượng" }
+        new BankInformation(33,"Ngân hàng TMCP Sài Gòn Thương Tín","Sacombank",2,"970403","SACOMBANK","STB","https://cdn.topi.vn/bank/ae570768b9d096b09482627251098017.png"),
+        new BankInformation(7,"Ngân hàng TNHH MTV CIMB Việt Nam","CIMB",1,"422589","CIMBBANK","CIMB","https://cdn.topi.vn/bank/787e675f1747d4d6acc873b7d6d7ce8b.png"),
+        new BankInformation(65,"Ngân hàng TNHH MTV Public Việt Nam","PublicBank",2,"970439","PBVN","PBVN","https://cdn.topi.vn/bank/88c8dc8d65cc9839e8cbaf10d5b7e20c.png"),
+        new BankInformation(75,"Ngân hàng TNHH MTV Standard Chartered Bank Việt Nam","StandardChartered",1,"970410","STANDARDCHARTERED","SCVN","https://cdn.topi.vn/bank/a029e8bd3a5d8613c7de2a0505e07128.png"),
+        new BankInformation(35,"Ngân hàng TMCP Sài Gòn","SCB",1,"970429","SCB","SGB","https://cdn.topi.vn/bank/117fcc8d0b5ce254f6d7cd9d7cec4d8f.png"),
+        new BankInformation(37,"Ngân hàng TMCP Đông Nam Á","SeABank",2,"970440","SEABANK","SEAV","https://cdn.topi.vn/bank/57266a3dcb4e1146c75e0799a3a7be85.png"),
+        new BankInformation(11,"Ngân hàng TMCP Phát triển Thành phố Hồ Chí Minh","HDBank",2,"970437","HDBANK","HDB","https://cdn.topi.vn/bank/2c3baf04779a2f19706ab5721c82627f.png"),
+        new BankInformation(28,"Ngân hàng Thương mại TNHH MTV Đại Dương","Oceanbank",2,"970414","OCEANBANK","OJB","https://cdn.topi.vn/bank/1c67d0604684ff247387d5086dd4cfe9.png"),
+        new BankInformation(8,"Ngân hàng TMCP Đông Á","DongABank",1,"970406","DONGABANK","EAB","https://cdn.topi.vn/bank/02e0e5ce268b73c72672c396c53543e7.png"),
+        new BankInformation(85,"Ngân hàng TNHH MTV Hong Leong Việt Nam","HongLeong",2,"970442","HONGLEONGBANK","HLOB","https://cdn.topi.vn/bank/c379c3c8afe27b4acc2392790b17ad55.png"),
+        new BankInformation(52,"Ngân hàng Liên doanh Việt - Nga","VRB",2,"970421","VRB","VRB","https://cdn.topi.vn/bank/feba8c1e8ff401f988928554109b3f23.png"),
+        new BankInformation(104,"DBS Bank Ltd","DBSBank",2,"796500","DBS","DBS","https://cdn.topi.vn/bank/0de2c51f77c99f0188c4698448949521.png"),
+        new BankInformation(117,"Ngân hàng TMCP Sài Gòn Công Thương","SaigonBank",1,"970400","SAIGONBANK","SGCTB","https://cdn.topi.vn/bank/c312b71bf480943b6d874c9dd51f5895.png"),
+        new BankInformation(24,"Ngân hàng TMCP Nam Á","NamABank",2,"970428","NAMABANK","NAB","https://cdn.topi.vn/bank/89c6b06d591bbb4da7d4cd69d88f3da4.png"),
+        new BankInformation(18,"Ngân hàng TMCP Kiên Long","KienLongBank",2,"970452","KIENLONGBANK","KLB","https://cdn.topi.vn/bank/6f37efdc4162d09ac160dc0d2a894cbb.png"),
+        new BankInformation(41,"Ngân hàng TMCP Kỹ thương Việt Nam","Techcombank",2,"970407","TECHCOMBANK","TCB","https://cdn.topi.vn/bank/b5ff0ad5eae704be1e17e27339742368.png"),
+        new BankInformation(56,"Ngân hàng hợp tác CoopBank","CoopBank",2,"970446","COOPBANK","COOPBANK",""),
+        new BankInformation(135,"Ngân hàng United Overseas - Chi nhánh TP. Hồ Chí Minh","UnitedOverseas",1,"970458","UOB","UOB","https://cdn.topi.vn/bank/ce7288f5be0a098961035829df74bc21.png"),
+        new BankInformation(43,"Ngân hàng TMCP Quốc tế Việt Nam","VIB",2,"970441","VIB","VIB","https://cdn.topi.vn/bank/cbd66a299080023009fcae5961304953.png"),
+        new BankInformation(10,"Ngân hàng Thương mại TNHH MTV Dầu Khí Toàn Cầu","GPBank",2,"970408","GPBANK","GPB","https://cdn.topi.vn/bank/62401d02e31aed3271955d7cfdee93f6.png"),
+        new BankInformation(42,"Ngân hàng TMCP Tiên Phong","TPBank",2,"970423","TPBANK","TPB","https://cdn.topi.vn/bank/05a875d0b09336cc1e5aea37d4270fe5.png"),
+        new BankInformation(20,"Ngân hàng TMCP Quân đội","MBBank",1,"970422","MB","MBB","https://cdn.topi.vn/bank/6878c6a4e96621f552a61645b12267da.png"),
+        new BankInformation(51,"Ngân hàng TMCP Việt Nam Thịnh Vượng","VPBank",2,"970432","VPBANK","VPB","https://cdn.topi.vn/bank/501e22de70d42cea27b42290081b26b8.png"),
+        new BankInformation(9,"Ngân hàng TMCP Xuất Nhập khẩu Việt Nam","Eximbank",2,"970431","EXIMBANK","EIB","https://cdn.topi.vn/bank/b3b25953da833e1b0c35b8f2288e4086.png"),
+        new BankInformation(1,"Ngân hàng TMCP An Bình","ABBANK",2,"970425","ABBANK","ABB","https://cdn.topi.vn/bank/253b3a00a6fd9590250ac6a4e66fc596.png"),
+        new BankInformation(4,"Ngân hàng TMCP Bắc Á","BacABank",2,"970409","BACABANK","BAB","https://cdn.topi.vn/bank/8b6f1fb8f9d2f4c8a9f1eee4f95fa00f.png"),
+        new BankInformation(60,"Ngân hàng Công nghiệp Hàn Quốc - Chi nhánh Hà Nội","IBK-HN Bank",2,"970455","IBKHN","IBKHN","https://cdn.topi.vn/bank/0d041df4f8c35d46a2449f5b1a2bfb6d.png"),
+        new BankInformation(45,"Ngân hàng TMCP Việt Á","VietABank",2,"970427","VIETABANK","VAB","https://cdn.topi.vn/bank/cbb7ccd6410fe9d6ab5de652b2e272ab.png"),
+        new BankInformation(27,"OCB-Ngân Hàng Phương Đông","OCB",2,"970448","OCB","OCB","https://cdn.topi.vn/bank/212295c68b046e99a2dde40f36e36275.png"),
+        new BankInformation(30,"Ngân hàng TMCP Xăng dầu Petrolimex","PGBank",2,"970430","PGBANK","PGB","https://cdn.topi.vn/bank/092ed22e91d46e2e6fc645427ef7320a.png"),
+        new BankInformation(38,"Ngân hàng TMCP Sài Gòn - Hà Nội","SHB",2,"970443","SHB","SHB","https://cdn.topi.vn/bank/cc6fca524967d2599e1aee3971c3c24c.png"),
+        new BankInformation(2,"Ngân hàng TMCP Á Châu","ACB",2,"970416","ACB","ACB","https://cdn.topi.vn/bank/7d9ebde0da26bb354668d1fd5c3510f3.png"),
+        new BankInformation(3,"Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam","Agribank",1,"970405","AGRIBANK","AGR","https://cdn.topi.vn/bank/a6e64f6e2feaa1a438f676f76a1ff29c.png"),
+        new BankInformation(23,"Ngân hàng TMCP Hàng Hải","MSB",2,"970426","MSB","MSB","https://cdn.topi.vn/bank/3f5825cc5cb42955bcbb7cad4c5a38df.png"),
+        new BankInformation(72,"Ngân hàng TMCP Bản Việt","VietCapitalBank",2,"970454","BVBANK","BVB","https://cdn.topi.vn/bank/e2fdfbfb36bfecf5d706ba6076f72266.png"),
+        new BankInformation(91,"Ngân hàng TNHH Indovina","IndovinaBank",2,"970434","IVB","IVB",""),
+        new BankInformation(6,"Ngân hàng TMCP Đầu tư và Phát triển Việt Nam","BIDV",2,"970418","BIDV","BIDV","https://cdn.topi.vn/bank/e1c97fe428fdef389de4760b85841b6f.png"),
+        new BankInformation(66,"Ngân hàng TNHH MTV Shinhan Việt Nam","ShinhanBank",1,"970424","SHINHANBANK","SHBVN","https://cdn.topi.vn/bank/86225e36ade8faa0cba7003113ab61ab.png"),
+        new BankInformation(46,"Ngân hàng TMCP Việt Nam Thương Tín","VietBank",2,"970433","VIETBANK","VNB","https://cdn.topi.vn/bank/de6aae84478affb51483f3c578151e24.png"),
+        new BankInformation(13,"Ngân hàng TNHH MTV HSBC (Việt Nam)","HSBC",2,"458761","HSBC","HSBC","https://cdn.topi.vn/bank/e21541c99909f50140e0bfb03a6a42e6.png"),
+        new BankInformation(107,"Ngân hàng TMCP Quốc Dân","NCB",1,"970419","NCB","NCB","https://cdn.topi.vn/bank/f17e78dad29fe6cee462c4a5560466f5.png"),
+        new BankInformation(53,"Ngân hàng TNHH MTV Woori Việt Nam","Woori",1,"970457","WOORIBANK","WOORIBANK","https://cdn.topi.vn/bank/bb6577a3670e0b19f2c98de016ca6537.png"),
+        new BankInformation(130,"Ngân hàng Nonghyup - Chi nhánh Hà Nội","Nonghyup",1,"801011","NONGHYUP","NONGHYUP",""),
+        new BankInformation(84,"Ngân hàng TMCP Bưu Điện Liên Việt","LienVietPostBank",2,"970449","LPBANK","LPB","https://cdn.topi.vn/bank/65dc820a119008f07ae1ba6d6d99c78b.png"),
+        new BankInformation(49,"Ngân hàng TMCP Công thương Việt Nam","VietinBank",1,"970415","VIETINBANK","CTG","https://cdn.topi.vn/bank/8c94cf356e1599be1cce05a22d98f9a1.png"),
+        new BankInformation(82,"Ngân hàng TMCP Bảo Việt","BaoVietBank",2,"970438","BAOVIETBANK","BAOVB","https://cdn.topi.vn/bank/9ee660af6024dfdcaf0c2c293013b4d2.png"),
+        new BankInformation(32,"Ngân hàng TMCP Đại Chúng Việt Nam","PVcomBank",1,"970412","PVCOMBANK","PVcombank","https://cdn.topi.vn/bank/ed0b068cc8611a6fa1049492b2e766d3.png"),
+        new BankInformation(48,"Ngân hàng TMCP Ngoại Thương Việt Nam","Vietcombank",2,"970436","VIETCOMBANK","VCB","https://cdn.topi.vn/bank/61b52abfeccb2fde1b835c56c10fd811.png"),
     ];
 }
 #endregion

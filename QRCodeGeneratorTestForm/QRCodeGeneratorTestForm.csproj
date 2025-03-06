@@ -10,7 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="qrcode.ico" />
+	<Content Include="qrcode.ico">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	</Content>
+	<Content Include="logo.png">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	</Content>
   </ItemGroup>
 
   <ItemGroup>
