@@ -1,0 +1,9 @@
+services:
+  webapi:
+    build:
+      context: ./QRCodeGeneratorPresentation
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+      - "8443:443"
+    restart: always
