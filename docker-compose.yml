@@ -1,8 +1,8 @@
 services:
   webapi:
     build:
-      context: ./QRCodeGeneratorPresentation
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: QRCodeGeneratorPresentation/Dockerfile
     ports:
       - "8080:80"
       - "8443:443"
