@@ -3,12 +3,16 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-COPY ../generate-qr-code.sln ./
-COPY ../VietNamQRPay/ ./VietNamQRPay/
-COPY ./ ./QRCodeGeneratorPresentation/
+# Copy the solution and projects files
+COPY WebAPI.sln ./
+COPY Library/ ./Library/
+COPY WebAPI/ ./WebAPI/
+
+# Restore dependencies
+WORKDIR /app/WebAPI
 RUN dotnet restore
 
-COPY . ./
+# Build the service project
 RUN dotnet publish -c Release -o /out
 
 # This stage is used to publish the service project to be copied to the final stage
