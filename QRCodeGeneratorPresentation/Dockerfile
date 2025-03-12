@@ -3,7 +3,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-COPY *.csproj ./
+COPY ../generate-qr-code.sln ./
+COPY ../VietNamQRPay/ ./VietNamQRPay/
+COPY ./ ./QRCodeGeneratorPresentation/
 RUN dotnet restore
 
 COPY . ./
