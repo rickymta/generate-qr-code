@@ -3,7 +3,9 @@ services:
     build:
       context: .
       dockerfile: WebAPI/Dockerfile
+      args:
+        BUILD_CONFIGURATION: ${BUILD_ENVIRONMENT}
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "${EXPOSE_PORT_HTTP}:80"
+      - "${EXPOSE_PORT_HTTPS}:443"
     restart: always
